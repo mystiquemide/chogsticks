@@ -158,7 +158,7 @@ function rays(rot: number, color: string) {
     const a2 = (((i + 1) * 22.5 + rot) * Math.PI) / 180;
     d += `M${cx},${cy}L${cx + 600 * Math.cos(a1)},${cy + 600 * Math.sin(a1)}L${cx + 600 * Math.cos(a2)},${cy + 600 * Math.sin(a2)}Z`;
   }
-  return `<path d="${d}" fill="${color}" opacity="0.55"/>`;
+  return `<path d="${d}" fill="${color}" opacity="0.26"/>`;
 }
 
 function speedLines(seed: number) {

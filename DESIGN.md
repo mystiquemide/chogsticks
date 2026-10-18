@@ -64,7 +64,7 @@ Stickers are generated from each token's on-chain art (IPFS `image` from `tokenU
 - Base set: GM (yellow, spinning sunburst), WAGMI (green, bounce with sparkles), NGMI (red rubber stamp slams onto grayscale art), COPE (aqua, wobble with sweat drops), LFG (orange, zoom punch with shake and speed lines), CHOG ON (pink, deep fried strobe).
 - Trait captions: derived from metadata, up to 3 per token, one per trait. Example: Eyes = BTC Glass adds NUMBER GO UP, Mouth = Rainbow Puke adds SICK, Tier = Legendary adds LEGENDARY.
 - Output is a palette PNG, roughly 80 to 170 KB.
-- Reference output: animated samples in `assets/stickers/`, static sheet `assets/sticker-sheet.png` (tokens #1 and #7).
+- Reference output: animated samples in `assets/stickers/`, static sheet `assets/sticker-sheet.png`. Showcase token is #21 (Mon Cap).
 
 ## 8. Routes and screens
 
