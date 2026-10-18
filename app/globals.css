@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #141014;
+  --paper: #f3eddc;
+  --white: #ffffff;
+  --purple: #a85cdf;
+  --pink: #e46fae;
+  --aqua: #7fd3d6;
+  --green: #2fbf71;
+  --muted: #6e6470;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-purple: var(--purple);
+  --color-pink: var(--pink);
+  --color-aqua: var(--aqua);
+  --color-green: var(--green);
+  --color-muted: var(--muted);
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --radius-card: 20px;
+  --radius-sticker: 28px;
+  --shadow-hard: 4px 4px 0 0 var(--ink);
+  --shadow-hard-lg: 6px 6px 0 0 var(--ink);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@utility ink-border {
+  border: 3px solid var(--ink);
+}
+
+@utility press {
+  transition: transform 80ms ease, box-shadow 80ms ease;
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--ink);
+  }
+}
