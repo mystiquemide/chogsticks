@@ -1,18 +1,19 @@
-import { getToken, renderSticker, stickersFor } from "@/lib/stickers";
+import { getToken, renderSticker, renderStickerGif, stickersFor } from "@/lib/stickers";
 
 export async function GET(_req: Request, ctx: RouteContext<"/api/sticker/[id]/[name]">) {
   const { id, name } = await ctx.params;
+  const match = /^([a-z-]+)\.(png|gif)$/.exec(name);
   const tokenId = Number(id);
-  const stickerName = name.replace(/\.png$/, "");
-  const token = Number.isInteger(tokenId) ? getToken(tokenId) : undefined;
-  const def = token && stickersFor(token).find((s) => s.name === stickerName);
+  const token = match && Number.isInteger(tokenId) ? getToken(tokenId) : undefined;
+  const def = token && stickersFor(token).find((s) => s.name === match![1]);
   if (!token || !def) return new Response("Not found", { status: 404 });
+  const gif = match![2] === "gif";
 
   try {
-    const png = await renderSticker(token, def);
-    return new Response(new Uint8Array(png), {
+    const body = gif ? await renderStickerGif(token, def) : await renderSticker(token, def);
+    return new Response(new Uint8Array(body), {
       headers: {
-        "Content-Type": "image/png",
+        "Content-Type": gif ? "image/gif" : "image/png",
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });

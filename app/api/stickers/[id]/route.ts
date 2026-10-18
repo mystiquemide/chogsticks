@@ -7,6 +7,6 @@ export async function GET(_req: Request, ctx: RouteContext<"/api/stickers/[id]">
   return Response.json({
     id: token.id,
     traits: token.traits,
-    stickers: stickersFor(token).map((s) => ({ name: s.name, caption: s.caption, url: `/api/sticker/${token.id}/${s.name}.png` })),
+    stickers: stickersFor(token).map((s) => ({ name: s.name, caption: s.caption, url: `/api/sticker/${token.id}/${s.name}.png`, gif: `/api/sticker/${token.id}/${s.name}.gif` })),
   });
 }

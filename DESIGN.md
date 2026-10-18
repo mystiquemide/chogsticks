@@ -58,12 +58,13 @@ There is no product mascot. Each holder's own Chog is the mascot. UI never shows
 
 Stickers are generated from each token's on-chain art (IPFS `image` from `tokenURI`). The art cannot change expression, so packs combine the real art with caption and effect layers.
 
-- Canvas 512 x 512 art, rounded 72px, inside a white die-cut border with 8px ink edge and 12px hard shadow.
-- Caption: Inter ExtraBold, uppercase, white fill, 12px ink stroke, auto-fit to width, bottom third.
-- Base set: GM, WAGMI, NGMI (grayscale), COPE (tilted), LFG (face zoom), CHOG ON (deep fried).
+- Scene 600 x 600: art 480 x 480 rounded 64px inside a white die-cut border with 8px ink edge and a 12px hard shadow.
+- Captions: Inter ExtraBold caps, bold color fill, 26px ink stroke, 10px hard ink shadow, tilted -6 degrees, allowed to break out of the frame.
+- Every sticker exists as a static PNG and a 12 frame animated GIF (400px) that Discord plays inline.
+- Base set: GM (yellow, spinning sunburst), WAGMI (green, bounce with sparkles), NGMI (red rubber stamp slams onto grayscale art), COPE (aqua, wobble with sweat drops), LFG (orange, zoom punch with shake and speed lines), CHOG ON (pink, deep fried strobe).
 - Trait captions: derived from metadata, up to 3 per token, one per trait. Example: Eyes = BTC Glass adds NUMBER GO UP, Mouth = Rainbow Puke adds SICK, Tier = Legendary adds LEGENDARY.
 - Output is a palette PNG, roughly 80 to 170 KB.
-- Reference output: `assets/stickers/`, contact sheet `assets/sticker-pack-token-1.png` (token #1).
+- Reference output: animated samples in `assets/stickers/`, static sheet `assets/sticker-sheet.png` (tokens #1 and #7).
 
 ## 8. Routes and screens
 
