@@ -35,7 +35,7 @@ Rules:
 | payout-green | #2FBF71 | $CHOG amounts and increments only |
 | muted | #6E6470 | Secondary text |
 
-Colors were sampled from real Chog Genesis art (tokens 1462, 7, 500).
+Colors were sampled from real Chog Genesis art (image files 1462.webp, 7.webp, 500.webp).
 
 ## 4. Typography
 
@@ -61,8 +61,9 @@ Stickers are generated from each token's on-chain art (IPFS `image` from `tokenU
 - Canvas 512 x 512 art, rounded 72px, inside a white die-cut border with 8px ink edge and 12px hard shadow.
 - Caption: Inter ExtraBold, uppercase, white fill, 12px ink stroke, auto-fit to width, bottom third.
 - Base set: GM, WAGMI, NGMI (grayscale), COPE (tilted), LFG (face zoom), CHOG ON (deep fried).
-- Trait captions: derived from metadata. Example: Eyes = BTC Glass adds NUMBER GO UP.
-- Reference output: `assets/stickers/`, contact sheet `assets/sticker-pack-1462.png`.
+- Trait captions: derived from metadata, up to 3 per token, one per trait. Example: Eyes = BTC Glass adds NUMBER GO UP, Mouth = Rainbow Puke adds SICK, Tier = Legendary adds LEGENDARY.
+- Output is a palette PNG, roughly 80 to 170 KB.
+- Reference output: `assets/stickers/`, contact sheet `assets/sticker-pack-token-1.png` (token #1).
 
 ## 8. Routes and screens
 
