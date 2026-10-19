@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "index-tokens": "tsx scripts/index-tokens.ts",
-    "test": "node --import tsx --test tests/*.test.ts"
+    "test": "node --import tsx --test tests/*.test.ts",
+    "register-commands": "tsx scripts/register-commands.ts"
   },
   "dependencies": {
     "@upstash/redis": "^1.39.0",
