@@ -15,47 +15,50 @@ export interface Store {
   hgetall(key: string): Promise<Record<string, number>>;
 }
 
+// Every key is namespaced: the Upstash database is shared with older projects.
+const PREFIX = "chogsticks:";
+
 class UpstashStore implements Store {
   constructor(private r: Redis) {}
 
   async incr(key: string, ttlSec?: number) {
-    const n = await this.r.incr(key);
-    if (ttlSec && n === 1) await this.r.expire(key, ttlSec);
+    const n = await this.r.incr(PREFIX + key);
+    if (ttlSec && n === 1) await this.r.expire(PREFIX + key, ttlSec);
     return n;
   }
   async setNX(key: string, value: string, ttlSec: number) {
-    return (await this.r.set(key, value, { nx: true, ex: ttlSec })) === "OK";
+    return (await this.r.set(PREFIX + key, value, { nx: true, ex: ttlSec })) === "OK";
   }
   async get(key: string) {
-    const v = await this.r.get<string | number>(key);
+    const v = await this.r.get<string | number>(PREFIX + key);
     return v === null ? null : String(v);
   }
   async set(key: string, value: string) {
-    await this.r.set(key, value);
+    await this.r.set(PREFIX + key, value);
   }
   zincrby(key: string, by: number, member: string) {
-    return this.r.zincrby(key, by, member);
+    return this.r.zincrby(PREFIX + key, by, member);
   }
   async ztop(key: string, count: number) {
-    const flat = await this.r.zrange<(string | number)[]>(key, 0, count - 1, { rev: true, withScores: true });
+    const flat = await this.r.zrange<(string | number)[]>(PREFIX + key, 0, count - 1, { rev: true, withScores: true });
     const out: { member: string; score: number }[] = [];
     for (let i = 0; i < flat.length; i += 2) out.push({ member: String(flat[i]), score: Number(flat[i + 1]) });
     return out;
   }
   zscore(key: string, member: string) {
-    return this.r.zscore(key, member);
+    return this.r.zscore(PREFIX + key, member);
   }
   sadd(key: string, member: string) {
-    return this.r.sadd(key, member);
+    return this.r.sadd(PREFIX + key, member);
   }
   scard(key: string) {
-    return this.r.scard(key);
+    return this.r.scard(PREFIX + key);
   }
   hincrby(key: string, field: string, by: number) {
-    return this.r.hincrby(key, field, by);
+    return this.r.hincrby(PREFIX + key, field, by);
   }
   async hgetall(key: string) {
-    const h = (await this.r.hgetall<Record<string, number | string>>(key)) ?? {};
+    const h = (await this.r.hgetall<Record<string, number | string>>(PREFIX + key)) ?? {};
     return Object.fromEntries(Object.entries(h).map(([k, v]) => [k, Number(v)]));
   }
 }
