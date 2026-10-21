@@ -8,6 +8,7 @@ export interface Store {
   set(key: string, value: string): Promise<void>;
   zincrby(key: string, by: number, member: string): Promise<number>;
   ztop(key: string, count: number): Promise<{ member: string; score: number }[]>;
+  zcard(key: string): Promise<number>;
   zscore(key: string, member: string): Promise<number | null>;
   sadd(key: string, member: string): Promise<number>;
   scard(key: string): Promise<number>;
@@ -47,6 +48,9 @@ class UpstashStore implements Store {
   }
   zscore(key: string, member: string) {
     return this.r.zscore(PREFIX + key, member);
+  }
+  zcard(key: string) {
+    return this.r.zcard(PREFIX + key);
   }
   sadd(key: string, member: string) {
     return this.r.sadd(PREFIX + key, member);
@@ -101,6 +105,9 @@ export class MemoryStore implements Store {
   }
   async zscore(key: string, member: string) {
     return this.z.get(key)?.get(member) ?? null;
+  }
+  async zcard(key: string) {
+    return this.z.get(key)?.size ?? 0;
   }
   async sadd(key: string, member: string) {
     const s = this.s.get(key) ?? new Set<string>();
