@@ -1,4 +1,4 @@
-const INSTALL_URL = `https://discord.com/oauth2/authorize?client_id=${process.env.CHOGSTICKS_Application_ID ?? ""}`;
+import { INSTALL_URL } from "@/components/Nav";
 
 export default function Home() {
   return (

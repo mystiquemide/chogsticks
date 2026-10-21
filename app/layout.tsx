@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Koulen } from "next/font/google";
+import { Nav } from "@/components/Nav";
 import "./globals.css";
 
 const koulen = Koulen({ variable: "--font-koulen", subsets: ["latin"], weight: "400" });
@@ -14,7 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${koulen.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }
