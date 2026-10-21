@@ -39,7 +39,7 @@ Colors were sampled from real Chog Genesis art (image files 1462.webp, 7.webp, 5
 
 ## 4. Typography
 
-- Display: Bricolage Grotesque ExtraBold, uppercase for headings over 32px.
+- Display: Koulen (same poster type as chog.xyz), uppercase headings.
 - Body: Inter 400 and 600.
 - Numbers: JetBrains Mono 700 for counters, ranks, $CHOG amounts, token ids.
 - Scale: 64 / 40 / 28 / 20 / 16 / 14.
