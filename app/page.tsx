@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { ChatPreview } from "@/components/ChatPreview";
+import { HowItWorks } from "@/components/HowItWorks";
 import { INSTALL_URL } from "@/components/Nav";
 import { StatsStrip, StatsStripFallback } from "@/components/StatsStrip";
 
@@ -42,6 +43,7 @@ export default function Home() {
           </Suspense>
         </div>
       </section>
+      <HowItWorks />
     </main>
   );
 }
