@@ -3,8 +3,8 @@ import { CHOG_COMMAND } from "../lib/discord";
 
 async function main() {
   const app = process.env.CHOGSTICKS_Application_ID;
-  const token = process.env.CHOGSTICKS_Bot_Token;
-  if (!app || !token) throw new Error("Set CHOGSTICKS_Application_ID and CHOGSTICKS_Bot_Token");
+  const token = process.env.CHOGSTICKS_BOT_TOKEN ?? process.env.CHOGSTICKS_Bot_Token;
+  if (!app || !token) throw new Error("Set CHOGSTICKS_Application_ID and CHOGSTICKS_BOT_TOKEN");
   const res = await fetch(`https://discord.com/api/v10/applications/${app}/commands`, {
     method: "PUT",
     headers: { Authorization: `Bot ${token}`, "Content-Type": "application/json" },
