@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { ChatPreview } from "@/components/ChatPreview";
 import { HowItWorks } from "@/components/HowItWorks";
+import { MostMemed, MostMemedFallback } from "@/components/MostMemed";
 import { INSTALL_URL } from "@/components/Nav";
 import { StatsStrip, StatsStripFallback } from "@/components/StatsStrip";
 
@@ -44,6 +45,9 @@ export default function Home() {
         </div>
       </section>
       <HowItWorks />
+      <Suspense fallback={<MostMemedFallback />}>
+        <MostMemed />
+      </Suspense>
     </main>
   );
 }
