@@ -4,6 +4,7 @@
   --ink: #141014;
   --paper: #f3eddc;
   --white: #ffffff;
+  --chog-pink: #d83e7e;
   --purple: #a85cdf;
   --pink: #e46fae;
   --aqua: #7fd3d6;
@@ -14,6 +15,7 @@
 @theme inline {
   --color-ink: var(--ink);
   --color-paper: var(--paper);
+  --color-chog-pink: var(--chog-pink);
   --color-purple: var(--purple);
   --color-pink: var(--pink);
   --color-aqua: var(--aqua);

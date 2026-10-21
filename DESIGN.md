@@ -29,7 +29,8 @@ Rules:
 | ink | #141014 | Outlines, text, shadows |
 | paper | #F3EDDC | Page background |
 | white | #FFFFFF | Sticker borders, card fill |
-| chog-purple | #A85CDF | Primary actions, brand mark |
+| chog-pink | #D83E7E | Primary buttons (matches chog.xyz) |
+| chog-purple | #A85CDF | Brand mark, ranks, secondary accents |
 | bubble-pink | #E46FAE | Rank badges, highlights |
 | pool-aqua | #7FD3D6 | Secondary surfaces, info |
 | payout-green | #2FBF71 | $CHOG amounts and increments only |
