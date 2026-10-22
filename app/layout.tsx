@@ -16,8 +16,17 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://chogsticks.vercel.app"),
   title: "Chogsticks",
   description: "Your Chog gets paid when the internet uses it.",
+  openGraph: {
+    title: "Chogsticks",
+    description:
+      "Every Chog Genesis NFT is an animated sticker pack. Send it with /chog in Discord, and the holder earns $CHOG on Monad.",
+    url: "/",
+    siteName: "Chogsticks",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

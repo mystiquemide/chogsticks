@@ -23,7 +23,7 @@ Chogsticks turns use into income. The more people reach for your Chog in chat, t
 | Step | What happens |
 |---|---|
 | **Send** | `/chog sticker:lfg id:21` in any server, DM, or group chat. Chog #21's animated sticker posts. |
-| **Count** | The send is credited to token #21. Different people count fully, repeats fade, and a holder spamming their own Chog earns nothing. |
+| **Count** | The send is credited to token #21. Different people count fully, repeats fade, and fresh alt accounts earn nothing. |
 | **Settle** | Each week, the scores become a Merkle root posted to the pool contract on Monad. |
 | **Claim** | Whoever holds #21 at claim time collects its $CHOG. Sell the Chog and its unclaimed and future earnings go to the buyer. |
 
@@ -52,7 +52,6 @@ Then check the [leaderboard](https://chogsticks.vercel.app/leaderboard) and the 
 |---|---|---|
 | One account spams a Chog 10 times | Scores 1 + 0.5 + 0.25 + 0.125 + 0.0625, then 0 for the rest of the day | [`tests/scoring.test.ts`](tests/scoring.test.ts) |
 | Fresh alt accounts | Discord accounts younger than 30 days are counted but not credited (age read from the user id) | [`tests/scoring.test.ts`](tests/scoring.test.ts) |
-| Holder sends their own Chog | Scores 0 | [`tests/scoring.test.ts`](tests/scoring.test.ts) |
 | Replaying a Discord interaction | Ignored, counted once | [`tests/scoring.test.ts`](tests/scoring.test.ts) |
 | Forged request to the bot endpoint | Rejected, Ed25519 signature check runs before anything is read | [`app/api/discord/route.ts`](app/api/discord/route.ts) |
 | Claiming twice, claiming a token you don't hold, inflating the amount, using another token's proof | Reverts | [`contracts/test/ChogsticksPool.t.sol`](contracts/test/ChogsticksPool.t.sol) |
@@ -91,6 +90,7 @@ Each week's full allocation (every token, score, amount, and proof) is published
 - **The contract is unaudited.** It is small and covered by 16 Foundry tests, but no third party has reviewed it.
 - **Counting happens off-chain.** Sends are scored on the Chogsticks server and settled weekly. The poster wallet (`0x460a…5c6F`) decides each week's root. It cannot withdraw funds or post more than the pool holds, and each allocation is published for anyone to check.
 - **Unclaimed $CHOG stays in the pool.** There is no withdraw path, by design, so nothing can be pulled back out.
+- **Holders can still send their own Chog.** It is capped at 5 decaying sends a day like anyone else. Blocking it fully needs Discord-to-wallet linking, which is not built yet.
 - **Discord only for now.** The Telegram and X paths are not built.
 - **The pool is small.** It was seeded with 51.58 $CHOG. Anyone can top it up with `fund()`.
 - **Week 1 was shortened.** It closed on Oct 23 at 08:00 UTC for the launch payout. Weeks run 7 days from there.

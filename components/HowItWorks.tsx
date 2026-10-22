@@ -71,7 +71,7 @@ export function HowItWorks() {
               <span className="text-muted">+0</span>
             </li>
             <li className="flex justify-between">
-              <span>Holder spamming own Chog</span>
+              <span>Account under 30 days old</span>
               <span className="text-muted">+0</span>
             </li>
           </ul>
