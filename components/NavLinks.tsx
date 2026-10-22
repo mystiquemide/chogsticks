@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export function NavLinks({
   links,
@@ -11,6 +12,28 @@ export function NavLinks({
   variant: "bar" | "menu";
 }) {
   const path = usePathname();
+
+  // The mobile menu is a <details>: close it on outside taps and Escape.
+  useEffect(() => {
+    if (variant !== "menu") return;
+    const close = (e: Event) => {
+      document.querySelectorAll("details[data-menu][open]").forEach((d) => {
+        if (
+          e.type === "keydown"
+            ? (e as KeyboardEvent).key === "Escape"
+            : !d.contains(e.target as Node)
+        )
+          d.removeAttribute("open");
+      });
+    };
+    document.addEventListener("click", close);
+    document.addEventListener("keydown", close);
+    return () => {
+      document.removeEventListener("click", close);
+      document.removeEventListener("keydown", close);
+    };
+  }, [variant]);
+
   return links.map((l) => {
     const active = path === l.href || path.startsWith(`${l.href}/`);
     const cls =
@@ -23,6 +46,9 @@ export function NavLinks({
           href={l.href}
           className={cls}
           aria-current={active ? "page" : undefined}
+          onClick={(e) =>
+            e.currentTarget.closest("details")?.removeAttribute("open")
+          }
         >
           {l.label}
         </Link>

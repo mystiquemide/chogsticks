@@ -93,7 +93,7 @@ export function Nav() {
           <span className="hidden md:inline">Add to Discord</span>
         </a>
         {LINKS.length > 0 && (
-          <details className="relative md:hidden">
+          <details data-menu className="relative md:hidden">
             <summary
               className="ink-border flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full bg-white shadow-hard [&::-webkit-details-marker]:hidden"
               aria-label="Menu"
