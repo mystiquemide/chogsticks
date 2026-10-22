@@ -14,6 +14,7 @@ const ALL_COLUMNS = [
       { label: "Try it", href: "/try" },
       { label: "Leaderboard", href: "/leaderboard" },
       { label: "Pool", href: "/pool" },
+      { label: "My Chogs", href: "/my" },
     ],
   },
   {

@@ -9,6 +9,7 @@ const ALL_LINKS = [
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/try", label: "Try it" },
   { href: "/pool", label: "Pool" },
+  { href: "/my", label: "My Chogs" },
 ];
 const LINKS = ALL_LINKS.filter((l) => isLive(l.href));
 
