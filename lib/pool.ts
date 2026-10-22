@@ -40,6 +40,13 @@ const poolAbi = [
     inputs: [{ type: "uint256" }],
     outputs: [{ type: "uint256" }],
   },
+  {
+    type: "function",
+    name: "claimed",
+    stateMutability: "view",
+    inputs: [{ type: "uint256" }, { type: "uint256" }],
+    outputs: [{ type: "bool" }],
+  },
 ] as const;
 const erc20Abi = [
   {
@@ -132,5 +139,14 @@ export async function poster() {
     address: POOL_ADDRESS,
     abi: poolAbi,
     functionName: "poster",
+  });
+}
+
+export async function isClaimed(epoch: number, tokenId: number) {
+  return publicClient.readContract({
+    address: POOL_ADDRESS,
+    abi: poolAbi,
+    functionName: "claimed",
+    args: [BigInt(epoch), BigInt(tokenId)],
   });
 }

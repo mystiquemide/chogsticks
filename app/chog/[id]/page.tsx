@@ -3,9 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { ClaimButton } from "@/components/ClaimButton";
 import { StickerTile } from "@/components/StickerTile";
 import { INSTALL_URL } from "@/components/Nav";
-import { ownerOf, poolUnallocated } from "@/lib/pool";
+import { readEpoch } from "@/lib/epochs";
+import { isClaimed, ownerOf, POOL_ADDRESS, poolUnallocated } from "@/lib/pool";
 import { tokenStats } from "@/lib/stats";
 import { isLive } from "@/lib/routes";
 import { getToken, stickersFor } from "@/lib/stickers";
@@ -38,6 +40,22 @@ async function Stats({ id }: { id: number }) {
     ownerOf(id).catch(() => null),
     poolUnallocated().catch(() => null),
   ]);
+  const posted = stats
+    ? Array.from({ length: stats.epoch + 1 }, (_, e) => readEpoch(e)).flatMap(
+        (f) => {
+          const row = f?.rows.find((r) => r.tokenId === id);
+          return f && row
+            ? [{ epoch: f.epoch, amount: row.amount, proof: row.proof }]
+            : [];
+        },
+      )
+    : [];
+  const payouts = await Promise.all(
+    posted.map(async (p) => ({
+      ...p,
+      claimed: await isClaimed(p.epoch, id).catch(() => false),
+    })),
+  );
   const max = stats ? Math.max(1, ...stats.last7.map((d) => d.sends)) : 1;
   return (
     <>
@@ -71,6 +89,28 @@ async function Stats({ id }: { id: number }) {
         <p className="mt-1 text-sm text-muted">
           The current holder. Sell this Chog and its earnings go to the buyer.
         </p>
+        {payouts.length > 0 && (
+          <div className="mt-4 flex flex-col gap-3 border-t-2 border-ink/10 pt-4">
+            {payouts.map((p) =>
+              p.claimed ? (
+                <p key={p.epoch} className="font-mono text-sm">
+                  Week {p.epoch + 1}: {fmt(Number(p.amount) / 1e18, 4)} $CHOG
+                  claimed
+                </p>
+              ) : (
+                <ClaimButton
+                  key={p.epoch}
+                  pool={POOL_ADDRESS}
+                  epoch={p.epoch}
+                  tokenId={id}
+                  amount={p.amount}
+                  proof={p.proof}
+                  owner={owner}
+                />
+              ),
+            )}
+          </div>
+        )}
         {stats && unallocated !== null && (
           <p className="mt-3 font-mono text-sm">
             Est. this week:{" "}

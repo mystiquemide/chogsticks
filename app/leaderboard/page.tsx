@@ -4,7 +4,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { INSTALL_URL } from "@/components/Nav";
 import { poolUnallocated } from "@/lib/pool";
-import { EPOCH0_MS } from "@/lib/scoring";
+import { epochEnd, epochStart } from "@/lib/scoring";
 import { currentEpoch, topChogs } from "@/lib/stats";
 
 export const metadata: Metadata = {
@@ -14,15 +14,13 @@ export const metadata: Metadata = {
 
 type Props = { searchParams: Promise<{ range?: string }> };
 
-const WEEK_MS = 7 * 86_400_000;
 const fmt = (n: number, d = 0) =>
   n.toLocaleString("en-US", { maximumFractionDigits: d });
-const day = (ms: number) =>
-  new Date(ms).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+const day = (ms: number) => {
+  const d = new Date(ms);
+  const date = d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+  return d.getUTCHours() ? `${date} ${String(d.getUTCHours()).padStart(2, "0")}:00` : date;
+};
 
 function Tabs({ range }: { range: "week" | "all" }) {
   const tab = (href: string, label: string, active: boolean) => (
@@ -51,14 +49,15 @@ async function Board({ searchParams }: Props) {
     poolUnallocated().catch(() => null),
   ]);
   const totalScore = rows?.reduce((s, r) => s + r.score, 0) ?? 0;
-  const start = EPOCH0_MS + epoch * WEEK_MS;
+  const start = epochStart(epoch);
+  const end = epochEnd(epoch);
 
   return (
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <p className="max-w-xl text-muted">
           {range === "week"
-            ? `Week ${epoch + 1}, ${day(start)} to ${day(start + WEEK_MS)} UTC. `
+            ? `Week ${epoch + 1}, ${day(start)} to ${day(end)} UTC. `
             : "Every week since launch. "}
           Score counts different people sending a Chog. Spam from one account
           fades out.

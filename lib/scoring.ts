@@ -9,8 +9,20 @@ export const EPOCH0_MS = Number(process.env.EPOCH0_MS ?? Date.UTC(2026, 9, 19));
 export const DAILY_CAP = 5;
 export const MIN_ACCOUNT_AGE_DAYS = 30;
 
+// Week 1 (epoch 0) was closed early for the launch payout. Weekly epochs run from that cutoff.
+export const LAUNCH_CUTOFF_MS = Number(process.env.LAUNCH_CUTOFF_MS ?? Date.UTC(2026, 9, 23, 8));
+
 export function epochOf(nowMs: number) {
-  return Math.max(0, Math.floor((nowMs - EPOCH0_MS) / WEEK_MS));
+  if (nowMs < LAUNCH_CUTOFF_MS) return 0;
+  return 1 + Math.floor((nowMs - LAUNCH_CUTOFF_MS) / WEEK_MS);
+}
+
+export function epochStart(epoch: number) {
+  return epoch === 0 ? EPOCH0_MS : LAUNCH_CUTOFF_MS + (epoch - 1) * WEEK_MS;
+}
+
+export function epochEnd(epoch: number) {
+  return epoch === 0 ? LAUNCH_CUTOFF_MS : LAUNCH_CUTOFF_MS + epoch * WEEK_MS;
 }
 
 export function dayOf(nowMs: number) {

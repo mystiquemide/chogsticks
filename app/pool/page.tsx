@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import activity from "@/data/pool-activity.json";
 import { epochRoots, POOL_ADDRESS, poolBalances, poster } from "@/lib/pool";
-import { EPOCH0_MS } from "@/lib/scoring";
+import { epochEnd, epochStart } from "@/lib/scoring";
 import { currentEpoch } from "@/lib/stats";
 
 export const metadata: Metadata = {
@@ -12,16 +12,14 @@ export const metadata: Metadata = {
     "The $CHOG payout pool on Monad: balance, weekly payouts, and how it works.",
 };
 
-const WEEK_MS = 7 * 86_400_000;
 const fmt = (n: number, d = 2) =>
   n.toLocaleString("en-US", { maximumFractionDigits: d });
 const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
-const day = (ms: number) =>
-  new Date(ms).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+const day = (ms: number) => {
+  const d = new Date(ms);
+  const date = d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+  return d.getUTCHours() ? `${date} ${String(d.getUTCHours()).padStart(2, "0")}:00` : date;
+};
 const scan = (kind: "address" | "tx", v: string) =>
   `https://monadscan.com/${kind}/${v}`;
 
@@ -82,7 +80,8 @@ async function Live() {
             </thead>
             <tbody className="font-mono text-sm">
               {(roots ?? []).map((r) => {
-                const start = EPOCH0_MS + r.epoch * WEEK_MS;
+                const start = epochStart(r.epoch);
+                const end = epochEnd(r.epoch);
                 return (
                   <tr
                     key={r.epoch}
@@ -92,7 +91,7 @@ async function Live() {
                       {r.epoch + 1}
                     </td>
                     <td className="px-3 py-3 sm:px-4">
-                      {day(start)} to {day(start + WEEK_MS)}
+                      {day(start)} to {day(end)}
                     </td>
                     <td className="px-3 py-3 text-right sm:px-4">
                       {r.posted ? (
@@ -101,7 +100,7 @@ async function Live() {
                         </span>
                       ) : r.epoch === epoch ? (
                         <span className="text-muted">
-                          Counting, posts after {day(start + WEEK_MS)}
+                          Counting, closes {day(end)}
                         </span>
                       ) : (
                         <span className="text-muted">Not posted</span>

@@ -1,7 +1,18 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { MemoryStore } from "../lib/store";
-import { DAILY_CAP, discordAccountCreatedMs, EPOCH0_MS, epochOf, keys, recordSend, sendWeight } from "../lib/scoring";
+import {
+  DAILY_CAP,
+  discordAccountCreatedMs,
+  EPOCH0_MS,
+  epochEnd,
+  epochOf,
+  epochStart,
+  keys,
+  LAUNCH_CUTOFF_MS,
+  recordSend,
+  sendWeight,
+} from "../lib/scoring";
 
 const NOW = EPOCH0_MS + 3 * 86_400_000 + 3_600_000;
 // Snowflake for an account created at a given time.
@@ -82,9 +93,15 @@ test("leaderboard orders tokens by score", async () => {
   assert.deepEqual(top, [{ member: "21", score: 2 }, { member: "7", score: 1 }]);
 });
 
-test("epochs roll over every 7 days and never go negative", () => {
+test("week 1 ends at the launch cutoff, later weeks run 7 days from it", () => {
   assert.equal(epochOf(EPOCH0_MS), 0);
-  assert.equal(epochOf(EPOCH0_MS + 7 * 86_400_000 - 1), 0);
-  assert.equal(epochOf(EPOCH0_MS + 7 * 86_400_000), 1);
   assert.equal(epochOf(EPOCH0_MS - 1), 0);
+  assert.equal(epochOf(LAUNCH_CUTOFF_MS - 1), 0);
+  assert.equal(epochOf(LAUNCH_CUTOFF_MS), 1);
+  assert.equal(epochOf(LAUNCH_CUTOFF_MS + 7 * 86_400_000 - 1), 1);
+  assert.equal(epochOf(LAUNCH_CUTOFF_MS + 7 * 86_400_000), 2);
+  assert.equal(epochStart(0), EPOCH0_MS);
+  assert.equal(epochEnd(0), LAUNCH_CUTOFF_MS);
+  assert.equal(epochStart(1), LAUNCH_CUTOFF_MS);
+  assert.equal(epochEnd(1), epochStart(2));
 });
