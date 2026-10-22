@@ -171,7 +171,7 @@ async function Stats({ id }: { id: number }) {
 export default function ChogPage({ params }: Props) {
   return (
     <Suspense
-      fallback={<main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10" />}
+      fallback={<main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-10" />}
     >
       <ChogBody params={params} />
     </Suspense>
@@ -187,7 +187,7 @@ async function ChogBody({ params }: Props) {
   );
 
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+    <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <Link
         href={isLive("/leaderboard") ? "/leaderboard" : "/"}
         className="font-display text-lg uppercase hover:text-chog-pink"

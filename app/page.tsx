@@ -10,7 +10,7 @@ import { StatsStrip, StatsStripFallback } from "@/components/StatsStrip";
 
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col">
+    <main id="main" className="flex flex-1 flex-col">
       <section className="mx-auto grid w-full max-w-5xl items-center gap-10 px-4 py-12 md:grid-cols-[1.1fr_1fr] md:py-20">
         <div className="flex flex-col gap-6">
           <h1 className="font-display text-5xl uppercase leading-none sm:text-6xl">

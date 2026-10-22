@@ -79,7 +79,7 @@ export function Footer() {
             <ul className="space-y-2">
               {col.links.map((l) => {
                 const external = l.href.startsWith("http");
-                const cls = `hover:text-white hover:underline ${"mono" in l && l.mono ? "whitespace-nowrap font-mono text-sm" : ""}`;
+                const cls = `inline-block py-1 hover:text-white hover:underline ${"mono" in l && l.mono ? "whitespace-nowrap font-mono text-sm" : ""}`;
                 return (
                   <li key={l.label}>
                     {external ? (

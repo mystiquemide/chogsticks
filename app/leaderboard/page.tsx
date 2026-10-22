@@ -172,7 +172,7 @@ async function Board({ searchParams }: Props) {
 
 export default function LeaderboardPage({ searchParams }: Props) {
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+    <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <h1 className="mb-4 font-display text-5xl uppercase leading-none sm:text-6xl">
         Most memed Chogs
       </h1>
