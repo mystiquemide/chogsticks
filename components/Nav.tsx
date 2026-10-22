@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { isLive } from "@/lib/routes";
 import { NavLinks } from "./NavLinks";
 
@@ -68,7 +69,20 @@ export function Nav() {
         </Link>
         {LINKS.length > 0 && (
           <ul className="ml-auto hidden items-center gap-6 md:flex">
-            <NavLinks links={LINKS} variant="bar" />
+            <Suspense
+              fallback={LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="font-display text-lg uppercase hover:text-chog-pink"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            >
+              <NavLinks links={LINKS} variant="bar" />
+            </Suspense>
           </ul>
         )}
         <a
@@ -94,7 +108,20 @@ export function Nav() {
               </svg>
             </summary>
             <ul className="ink-border absolute right-0 mt-3 w-48 rounded-[20px] bg-white p-2 shadow-hard-lg">
-              <NavLinks links={LINKS} variant="menu" />
+              <Suspense
+                fallback={LINKS.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="block rounded-xl px-3 py-2 font-display text-lg uppercase hover:bg-paper"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              >
+                <NavLinks links={LINKS} variant="menu" />
+              </Suspense>
             </ul>
           </details>
         )}
