@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { CHOG_NFT, CHOG_TOKEN } from "@/lib/chain";
 import { POOL_ADDRESS } from "@/lib/pool";
+import { isLive } from "@/lib/routes";
 import { INSTALL_URL } from "./Nav";
 
 const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
 const scan = (a: string) => `https://monadscan.com/address/${a}`;
 
-const COLUMNS = [
+const ALL_COLUMNS = [
   {
     title: "Product",
     links: [
@@ -45,10 +46,17 @@ const COLUMNS = [
   },
 ];
 
+const COLUMNS = ALL_COLUMNS.map((c) => ({
+  ...c,
+  links: c.links.filter((l) => l.href.startsWith("http") || isLive(l.href)),
+})).filter((c) => c.links.length > 0);
+
 export function Footer() {
   return (
     <footer className="mt-auto border-t-[3px] border-ink bg-ink text-paper">
-      <div className="mx-auto grid w-full max-w-5xl gap-10 px-4 py-12 md:grid-cols-[1.2fr_0.7fr_1.4fr_0.8fr]">
+      <div
+        className={`mx-auto grid w-full max-w-5xl gap-10 px-4 py-12 ${COLUMNS.length === 3 ? "md:grid-cols-[1.2fr_0.7fr_1.4fr_0.8fr]" : "md:grid-cols-[1.4fr_1.4fr_0.8fr]"}`}
+      >
         <div className="flex flex-col gap-4">
           <p className="font-display text-4xl uppercase leading-none">
             Chogsticks

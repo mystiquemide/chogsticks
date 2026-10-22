@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { isLive } from "@/lib/routes";
 import { currentEpoch, topChogs } from "@/lib/stats";
+import { INSTALL_URL } from "./Nav";
 
 function Frame({ children }: { children: React.ReactNode }) {
   return (
@@ -9,12 +11,14 @@ function Frame({ children }: { children: React.ReactNode }) {
         <h2 className="font-display text-4xl uppercase sm:text-5xl">
           Most memed this week
         </h2>
-        <Link
-          href="/leaderboard"
-          className="font-display text-lg uppercase underline decoration-[3px] underline-offset-4 hover:text-chog-pink"
-        >
-          Full leaderboard
-        </Link>
+        {isLive("/leaderboard") && (
+          <Link
+            href="/leaderboard"
+            className="font-display text-lg uppercase underline decoration-[3px] underline-offset-4 hover:text-chog-pink"
+          >
+            Full leaderboard
+          </Link>
+        )}
       </div>
       {children}
     </section>
@@ -40,12 +44,12 @@ export async function MostMemed() {
           <p className="font-display text-2xl uppercase">
             No sends this week yet. Be first.
           </p>
-          <Link
-            href="/try"
+          <a
+            href={isLive("/try") ? "/try" : INSTALL_URL}
             className="ink-border press rounded-full bg-chog-pink px-5 py-2 font-display text-lg uppercase text-white shadow-hard"
           >
-            Try it
-          </Link>
+            {isLive("/try") ? "Try it" : "Add to Discord"}
+          </a>
         </div>
       </Frame>
     );

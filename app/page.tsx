@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import { ChatPreview } from "@/components/ChatPreview";
+import { Footer } from "@/components/Footer";
+import { isLive } from "@/lib/routes";
 import { HowItWorks } from "@/components/HowItWorks";
 import { WhyNft } from "@/components/WhyNft";
 import { MostMemed, MostMemedFallback } from "@/components/MostMemed";
@@ -26,12 +28,14 @@ export default function Home() {
             >
               Add to Discord
             </a>
-            <a
-              href="/try"
-              className="ink-border press rounded-full bg-white px-6 py-3 font-display text-xl uppercase shadow-hard"
-            >
-              Try it now
-            </a>
+            {isLive("/try") && (
+              <a
+                href="/try"
+                className="ink-border press rounded-full bg-white px-6 py-3 font-display text-xl uppercase shadow-hard"
+              >
+                Try it now
+              </a>
+            )}
           </div>
         </div>
         <div className="flex justify-center md:justify-end">
@@ -50,6 +54,7 @@ export default function Home() {
         <MostMemed />
       </Suspense>
       <WhyNft />
+      <Footer />
     </main>
   );
 }

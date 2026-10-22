@@ -4,7 +4,11 @@ import { parse, type Font, type Glyph } from "opentype.js";
 import sharp from "sharp";
 import tokens from "@/data/tokens.json";
 
-export type Token = { id: number; image: string; traits: Record<string, string> };
+export type Token = {
+  id: number;
+  image: string;
+  traits: Record<string, string>;
+};
 
 type Effect = "none" | "gray" | "zoom" | "fried";
 type Overlay = "rays" | "speed" | "sparkles" | "sweat" | "none";
@@ -25,8 +29,12 @@ export type StickerDef = {
 const TOKENS = tokens as Token[];
 const BY_ID = new Map(TOKENS.map((t) => [t.id, t]));
 
-export const IMAGE_CID = "bafybeihau2egcccbdxymeckmmbrqytbfor5gkt3en6d5fsbueymdbq7g6e";
-const GATEWAYS = ["https://gateway.pinata.cloud/ipfs/", "https://ipfs.io/ipfs/"];
+export const IMAGE_CID =
+  "bafybeihau2egcccbdxymeckmmbrqytbfor5gkt3en6d5fsbueymdbq7g6e";
+const GATEWAYS = [
+  "https://gateway.pinata.cloud/ipfs/",
+  "https://ipfs.io/ipfs/",
+];
 
 const INK = "#141014";
 const YELLOW = "#FFD23F";
@@ -38,31 +46,250 @@ const PINK = "#E46FAE";
 const PURPLE = "#A85CDF";
 
 export const BASE_STICKERS: StickerDef[] = [
-  { name: "gm", caption: "GM", effect: "none", overlay: "rays", motion: "spin", color: YELLOW, tint: YELLOW },
-  { name: "wagmi", caption: "WAGMI", effect: "none", overlay: "sparkles", motion: "bounce", color: GREEN },
-  { name: "ngmi", caption: "NGMI", effect: "gray", overlay: "none", motion: "slam", color: RED, style: "stamp" },
-  { name: "cope", caption: "COPE", effect: "none", overlay: "sweat", motion: "wobble", color: AQUA, tint: "#3A7BD5" },
-  { name: "lfg", caption: "LFG", effect: "zoom", overlay: "speed", motion: "punch", color: ORANGE },
-  { name: "chog-on", caption: "CHOG ON", effect: "fried", overlay: "rays", motion: "strobe", color: PINK, tint: PURPLE },
+  {
+    name: "gm",
+    caption: "GM",
+    effect: "none",
+    overlay: "rays",
+    motion: "spin",
+    color: YELLOW,
+    tint: YELLOW,
+  },
+  {
+    name: "wagmi",
+    caption: "WAGMI",
+    effect: "none",
+    overlay: "sparkles",
+    motion: "bounce",
+    color: GREEN,
+  },
+  {
+    name: "ngmi",
+    caption: "NGMI",
+    effect: "gray",
+    overlay: "none",
+    motion: "slam",
+    color: RED,
+    style: "stamp",
+  },
+  {
+    name: "cope",
+    caption: "COPE",
+    effect: "none",
+    overlay: "sweat",
+    motion: "wobble",
+    color: AQUA,
+    tint: "#3A7BD5",
+  },
+  {
+    name: "lfg",
+    caption: "LFG",
+    effect: "zoom",
+    overlay: "speed",
+    motion: "punch",
+    color: ORANGE,
+  },
+  {
+    name: "chog-on",
+    caption: "CHOG ON",
+    effect: "fried",
+    overlay: "rays",
+    motion: "strobe",
+    color: PINK,
+    tint: PURPLE,
+  },
 ];
 
 // Trait stickers: first match per trait wins, max 3 per token.
 const TRAIT_RULES: { trait: string; match: RegExp; sticker: StickerDef }[] = [
-  { trait: "Eyes", match: /btc/i, sticker: { name: "number-go-up", caption: "NUMBER GO UP", effect: "none", overlay: "speed", motion: "punch", color: GREEN } },
-  { trait: "Eyes", match: /laser/i, sticker: { name: "laser-eyes", caption: "LASER EYES", effect: "zoom", overlay: "speed", motion: "strobe", color: RED, tint: RED } },
-  { trait: "Eyes", match: /^dead$/i, sticker: { name: "im-dead", caption: "IM DEAD", effect: "gray", overlay: "none", motion: "slam", color: RED, style: "stamp" } },
-  { trait: "Eyes", match: /heart/i, sticker: { name: "love-this", caption: "LOVE THIS", effect: "none", overlay: "sparkles", motion: "bounce", color: PINK } },
-  { trait: "Eyes", match: /cry|tear/i, sticker: { name: "sad-boi", caption: "SAD BOI", effect: "gray", overlay: "sweat", motion: "wobble", color: AQUA, tint: "#3A7BD5" } },
-  { trait: "Eyes", match: /side eye/i, sticker: { name: "side-eye", caption: "SIDE EYE", effect: "zoom", overlay: "none", motion: "wobble", color: YELLOW } },
-  { trait: "Mouth", match: /rainbow puke/i, sticker: { name: "sick", caption: "SICK", effect: "fried", overlay: "speed", motion: "punch", color: GREEN } },
-  { trait: "Mouth", match: /drool/i, sticker: { name: "want", caption: "WANT", effect: "none", overlay: "sparkles", motion: "bounce", color: PINK } },
-  { trait: "Mouth", match: /gold tooth/i, sticker: { name: "rich", caption: "RICH", effect: "none", overlay: "rays", motion: "spin", color: YELLOW, tint: YELLOW } },
-  { trait: "Accessory", match: /green candle/i, sticker: { name: "pump-it", caption: "PUMP IT", effect: "none", overlay: "speed", motion: "punch", color: GREEN } },
-  { trait: "Accessory", match: /red candle/i, sticker: { name: "dump-it", caption: "DUMP IT", effect: "gray", overlay: "none", motion: "slam", color: RED, style: "stamp" } },
-  { trait: "Accessory", match: /knife/i, sticker: { name: "stabby", caption: "STABBY", effect: "fried", overlay: "speed", motion: "strobe", color: RED, tint: RED } },
-  { trait: "Head", match: /crown/i, sticker: { name: "king", caption: "KING", effect: "none", overlay: "rays", motion: "spin", color: YELLOW, tint: YELLOW } },
-  { trait: "Head", match: /wizard/i, sticker: { name: "magic", caption: "MAGIC", effect: "none", overlay: "sparkles", motion: "bounce", color: PURPLE } },
-  { trait: "Tier", match: /legendary/i, sticker: { name: "legendary", caption: "LEGENDARY", effect: "none", overlay: "rays", motion: "spin", color: YELLOW, tint: YELLOW } },
+  {
+    trait: "Eyes",
+    match: /btc/i,
+    sticker: {
+      name: "number-go-up",
+      caption: "NUMBER GO UP",
+      effect: "none",
+      overlay: "speed",
+      motion: "punch",
+      color: GREEN,
+    },
+  },
+  {
+    trait: "Eyes",
+    match: /laser/i,
+    sticker: {
+      name: "laser-eyes",
+      caption: "LASER EYES",
+      effect: "zoom",
+      overlay: "speed",
+      motion: "strobe",
+      color: RED,
+      tint: RED,
+    },
+  },
+  {
+    trait: "Eyes",
+    match: /^dead$/i,
+    sticker: {
+      name: "im-dead",
+      caption: "IM DEAD",
+      effect: "gray",
+      overlay: "none",
+      motion: "slam",
+      color: RED,
+      style: "stamp",
+    },
+  },
+  {
+    trait: "Eyes",
+    match: /heart/i,
+    sticker: {
+      name: "love-this",
+      caption: "LOVE THIS",
+      effect: "none",
+      overlay: "sparkles",
+      motion: "bounce",
+      color: PINK,
+    },
+  },
+  {
+    trait: "Eyes",
+    match: /cry|tear/i,
+    sticker: {
+      name: "sad-boi",
+      caption: "SAD BOI",
+      effect: "gray",
+      overlay: "sweat",
+      motion: "wobble",
+      color: AQUA,
+      tint: "#3A7BD5",
+    },
+  },
+  {
+    trait: "Eyes",
+    match: /side eye/i,
+    sticker: {
+      name: "side-eye",
+      caption: "SIDE EYE",
+      effect: "zoom",
+      overlay: "none",
+      motion: "wobble",
+      color: YELLOW,
+    },
+  },
+  {
+    trait: "Mouth",
+    match: /rainbow puke/i,
+    sticker: {
+      name: "sick",
+      caption: "SICK",
+      effect: "fried",
+      overlay: "speed",
+      motion: "punch",
+      color: GREEN,
+    },
+  },
+  {
+    trait: "Mouth",
+    match: /drool/i,
+    sticker: {
+      name: "want",
+      caption: "WANT",
+      effect: "none",
+      overlay: "sparkles",
+      motion: "bounce",
+      color: PINK,
+    },
+  },
+  {
+    trait: "Mouth",
+    match: /gold tooth/i,
+    sticker: {
+      name: "rich",
+      caption: "RICH",
+      effect: "none",
+      overlay: "rays",
+      motion: "spin",
+      color: YELLOW,
+      tint: YELLOW,
+    },
+  },
+  {
+    trait: "Accessory",
+    match: /green candle/i,
+    sticker: {
+      name: "pump-it",
+      caption: "PUMP IT",
+      effect: "none",
+      overlay: "speed",
+      motion: "punch",
+      color: GREEN,
+    },
+  },
+  {
+    trait: "Accessory",
+    match: /red candle/i,
+    sticker: {
+      name: "dump-it",
+      caption: "DUMP IT",
+      effect: "gray",
+      overlay: "none",
+      motion: "slam",
+      color: RED,
+      style: "stamp",
+    },
+  },
+  {
+    trait: "Accessory",
+    match: /knife/i,
+    sticker: {
+      name: "stabby",
+      caption: "STABBY",
+      effect: "fried",
+      overlay: "speed",
+      motion: "strobe",
+      color: RED,
+      tint: RED,
+    },
+  },
+  {
+    trait: "Head",
+    match: /crown/i,
+    sticker: {
+      name: "king",
+      caption: "KING",
+      effect: "none",
+      overlay: "rays",
+      motion: "spin",
+      color: YELLOW,
+      tint: YELLOW,
+    },
+  },
+  {
+    trait: "Head",
+    match: /wizard/i,
+    sticker: {
+      name: "magic",
+      caption: "MAGIC",
+      effect: "none",
+      overlay: "sparkles",
+      motion: "bounce",
+      color: PURPLE,
+    },
+  },
+  {
+    trait: "Tier",
+    match: /legendary/i,
+    sticker: {
+      name: "legendary",
+      caption: "LEGENDARY",
+      effect: "none",
+      overlay: "rays",
+      motion: "spin",
+      color: YELLOW,
+      tint: YELLOW,
+    },
+  },
 ];
 
 export function getToken(id: number): Token | undefined {
@@ -86,7 +313,9 @@ export function stickersFor(token: Token): StickerDef[] {
 let font: Font | undefined;
 function getFont() {
   if (!font) {
-    const buf = readFileSync(path.join(process.cwd(), "lib/fonts/Inter-ExtraBold.otf"));
+    const buf = readFileSync(
+      path.join(process.cwd(), "lib/fonts/Inter-ExtraBold.otf"),
+    );
     font = parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.length));
   }
   return font;
@@ -116,7 +345,9 @@ async function fetchArt(file: string): Promise<Buffer> {
   let lastErr: unknown;
   for (const gw of GATEWAYS) {
     try {
-      const res = await fetch(`${gw}${IMAGE_CID}/${file}`, { signal: AbortSignal.timeout(15000) });
+      const res = await fetch(`${gw}${IMAGE_CID}/${file}`, {
+        signal: AbortSignal.timeout(15000),
+      });
       if (res.ok) {
         const buf = Buffer.from(await res.arrayBuffer());
         if (artCache.size > 200) artCache.clear();
@@ -141,10 +372,15 @@ const FRAMES = 12;
 
 async function artDataUri(src: Buffer, effect: Effect): Promise<string> {
   let img = sharp(src);
-  if (effect === "zoom") img = img.extract({ left: 160, top: 280, width: 720, height: 720 });
+  if (effect === "zoom")
+    img = img.extract({ left: 160, top: 280, width: 720, height: 720 });
   img = img.resize(ART, ART);
   if (effect === "gray") img = img.grayscale().linear(1.25, -20);
-  if (effect === "fried") img = img.modulate({ saturation: 3.4 }).linear(1.9, -110).sharpen({ sigma: 2 });
+  if (effect === "fried")
+    img = img
+      .modulate({ saturation: 3.4 })
+      .linear(1.9, -110)
+      .sharpen({ sigma: 2 });
   const jpg = await img.jpeg({ quality: 88 }).toBuffer();
   return `data:image/jpeg;base64,${jpg.toString("base64")}`;
 }
@@ -201,7 +437,10 @@ function sweat(t: number) {
   const drop = (x: number, y: number, s: number) =>
     `<path transform="translate(${x} ${y}) scale(${s})" d="M0,-34 C14,-12 22,2 22,14 A22,22 0 0 1 -22,14 C-22,2 -14,-12 0,-34Z" fill="#9FD8FF" stroke="${INK}" stroke-width="5"/>`;
   const fall = (t * 60) % 60;
-  return drop(AX + ART - 90, AY + 70 + fall, 1.2) + drop(AX + ART - 40, AY + 140 + fall * 0.6, 0.8);
+  return (
+    drop(AX + ART - 90, AY + 70 + fall, 1.2) +
+    drop(AX + ART - 40, AY + 140 + fall * 0.6, 0.8)
+  );
 }
 
 function captionSvg(def: StickerDef, t: number, motion: Motion) {
@@ -302,9 +541,19 @@ function sceneSvg(def: StickerDef, art: string, t: number): string {
 }
 
 // Frame used for the static PNG: the most dramatic moment of each motion.
-const KEY_T: Record<Motion, number> = { punch: 0.25, spin: 0.1, slam: 0.9, wobble: 0.25, bounce: 0.25, strobe: 0 };
+const KEY_T: Record<Motion, number> = {
+  punch: 0.25,
+  spin: 0.1,
+  slam: 0.9,
+  wobble: 0.25,
+  bounce: 0.25,
+  strobe: 0,
+};
 
-export async function renderSticker(token: Token, def: StickerDef): Promise<Buffer> {
+export async function renderSticker(
+  token: Token,
+  def: StickerDef,
+): Promise<Buffer> {
   const art = await artDataUri(await fetchArt(token.image), def.effect);
   return sharp(Buffer.from(sceneSvg(def, art, KEY_T[def.motion])))
     .png({ palette: true, quality: 90, effort: 8, compressionLevel: 9 })
@@ -313,7 +562,10 @@ export async function renderSticker(token: Token, def: StickerDef): Promise<Buff
 
 const GIF_SIZE = 400;
 
-export async function renderStickerGif(token: Token, def: StickerDef): Promise<Buffer> {
+export async function renderStickerGif(
+  token: Token,
+  def: StickerDef,
+): Promise<Buffer> {
   const art = await artDataUri(await fetchArt(token.image), def.effect);
   const frames = await Promise.all(
     Array.from({ length: FRAMES }, (_, i) =>
@@ -323,8 +575,17 @@ export async function renderStickerGif(token: Token, def: StickerDef): Promise<B
         .toBuffer(),
     ),
   );
-  const delay = Array.from({ length: FRAMES }, (_, i) => (def.motion === "slam" && i === FRAMES - 1 ? 1400 : 70));
+  const delay = Array.from({ length: FRAMES }, (_, i) =>
+    def.motion === "slam" && i === FRAMES - 1 ? 1400 : 70,
+  );
   return sharp(frames, { join: { animated: true } })
-    .gif({ delay, loop: 0, effort: 7, colours: 128, dither: 0.6, interFrameMaxError: 6 })
+    .gif({
+      delay,
+      loop: 0,
+      effort: 7,
+      colours: 128,
+      dither: 0.6,
+      interFrameMaxError: 6,
+    })
     .toBuffer();
 }

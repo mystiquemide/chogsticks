@@ -5,8 +5,18 @@ export async function GET() {
   try {
     const store = getStore();
     const n = await store.incr("health:pings");
-    return Response.json({ ok: true, store: storeKind(), pings: n, ms: Date.now() - started }, { headers: { "Cache-Control": "no-store" } });
+    return Response.json(
+      { ok: true, store: storeKind(), pings: n, ms: Date.now() - started },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (e) {
-    return Response.json({ ok: false, store: storeKind(), error: e instanceof Error ? e.message : String(e) }, { status: 500, headers: { "Cache-Control": "no-store" } });
+    return Response.json(
+      {
+        ok: false,
+        store: storeKind(),
+        error: e instanceof Error ? e.message : String(e),
+      },
+      { status: 500, headers: { "Cache-Control": "no-store" } },
+    );
   }
 }

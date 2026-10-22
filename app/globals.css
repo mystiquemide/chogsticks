@@ -40,7 +40,9 @@ body {
 }
 
 @utility press {
-  transition: transform 80ms ease, box-shadow 80ms ease;
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease;
   &:active {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 0 var(--ink);

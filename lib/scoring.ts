@@ -40,11 +40,16 @@ export type SendInput = {
 export type SendResult =
   | { status: "duplicate" }
   | { status: "counted"; score: number; nth: number }
-  | { status: "uncredited"; reason: "new-account" | "self-send" | "daily-cap"; nth?: number };
+  | {
+      status: "uncredited";
+      reason: "new-account" | "self-send" | "daily-cap";
+      nth?: number;
+    };
 
 export const keys = {
   interaction: (id: string) => `interaction:${id}`,
-  perSenderDay: (epoch: number, token: number, sender: string, day: number) => `sends:${epoch}:${token}:${sender}:${day}`,
+  perSenderDay: (epoch: number, token: number, sender: string, day: number) =>
+    `sends:${epoch}:${token}:${sender}:${day}`,
   leaderboard: (epoch: number | "all") => `lb:${epoch}`,
   raw: (epoch: number | "all", token: number) => `raw:${epoch}:${token}`,
   unique: (epoch: number, token: number) => `uniq:${epoch}:${token}`,
@@ -53,9 +58,13 @@ export const keys = {
   daily: (token: number) => `daily:${token}`,
 };
 
-export async function recordSend(store: Store, input: SendInput): Promise<SendResult> {
+export async function recordSend(
+  store: Store,
+  input: SendInput,
+): Promise<SendResult> {
   const { interactionId, tokenId, senderId, nowMs } = input;
-  if (!(await store.setNX(keys.interaction(interactionId), "1", 2 * 86_400))) return { status: "duplicate" };
+  if (!(await store.setNX(keys.interaction(interactionId), "1", 2 * 86_400)))
+    return { status: "duplicate" };
 
   const epoch = epochOf(nowMs);
   const day = dayOf(nowMs);
@@ -71,14 +80,24 @@ export async function recordSend(store: Store, input: SendInput): Promise<SendRe
     store.sadd(keys.senders("all"), senderId),
   ]);
 
-  if (nowMs - discordAccountCreatedMs(senderId) < MIN_ACCOUNT_AGE_DAYS * DAY_MS) {
+  if (
+    nowMs - discordAccountCreatedMs(senderId) <
+    MIN_ACCOUNT_AGE_DAYS * DAY_MS
+  ) {
     return { status: "uncredited", reason: "new-account" };
   }
-  if (input.senderWallet && input.tokenOwner && input.senderWallet.toLowerCase() === input.tokenOwner.toLowerCase()) {
+  if (
+    input.senderWallet &&
+    input.tokenOwner &&
+    input.senderWallet.toLowerCase() === input.tokenOwner.toLowerCase()
+  ) {
     return { status: "uncredited", reason: "self-send" };
   }
 
-  const nth = await store.incr(keys.perSenderDay(epoch, tokenId, senderId, day), 8 * 86_400);
+  const nth = await store.incr(
+    keys.perSenderDay(epoch, tokenId, senderId, day),
+    8 * 86_400,
+  );
   const score = sendWeight(nth);
   if (score === 0) return { status: "uncredited", reason: "daily-cap", nth };
 
