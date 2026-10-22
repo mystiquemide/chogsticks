@@ -7,7 +7,7 @@ import { ClaimButton } from "@/components/ClaimButton";
 import { StickerTile } from "@/components/StickerTile";
 import { INSTALL_URL } from "@/components/Nav";
 import { readEpoch } from "@/lib/epochs";
-import { isClaimed, ownerOf, POOL_ADDRESS, poolUnallocated } from "@/lib/pool";
+import { isClaimed, ownerOf, POOL_ADDRESS, weekBudget } from "@/lib/pool";
 import { tokenStats } from "@/lib/stats";
 import { isLive } from "@/lib/routes";
 import { getToken, stickersFor } from "@/lib/stickers";
@@ -35,10 +35,10 @@ const fmt = (n: number, d = 0) =>
 
 async function Stats({ id }: { id: number }) {
   await connection();
-  const [stats, owner, unallocated] = await Promise.all([
+  const [stats, owner, budget] = await Promise.all([
     tokenStats(id).catch(() => null),
     ownerOf(id).catch(() => null),
-    poolUnallocated().catch(() => null),
+    weekBudget().catch(() => null),
   ]);
   const posted = stats
     ? Array.from({ length: stats.epoch + 1 }, (_, e) => readEpoch(e)).flatMap(
@@ -111,11 +111,11 @@ async function Stats({ id }: { id: number }) {
             )}
           </div>
         )}
-        {stats && unallocated !== null && (
+        {stats && budget !== null && (
           <p className="mt-3 font-mono text-sm">
             Est. this week:{" "}
             <span className="font-bold text-green">
-              {fmt(stats.share * unallocated, 2)} $CHOG
+              {fmt(stats.share * budget, 2)} $CHOG
             </span>
             <span className="text-muted">
               {" "}

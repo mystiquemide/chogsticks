@@ -3,7 +3,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { INSTALL_URL } from "@/components/Nav";
-import { poolUnallocated } from "@/lib/pool";
+import { weekBudget } from "@/lib/pool";
 import { epochEnd, epochStart } from "@/lib/scoring";
 import { currentEpoch, topChogs } from "@/lib/stats";
 
@@ -50,9 +50,9 @@ async function Board({ searchParams }: Props) {
   await connection();
   const range = (await searchParams).range === "all" ? "all" : "week";
   const epoch = currentEpoch();
-  const [rows, unallocated] = await Promise.all([
+  const [rows, budget] = await Promise.all([
     topChogs(range === "all" ? "all" : epoch, 50).catch(() => null),
-    poolUnallocated().catch(() => null),
+    weekBudget().catch(() => null),
   ]);
   const totalScore = rows?.reduce((s, r) => s + r.score, 0) ?? 0;
   const start = epochStart(epoch);
@@ -156,8 +156,8 @@ async function Board({ searchParams }: Props) {
                   )}
                   {range === "week" && (
                     <td className="px-3 py-3 sm:px-4 text-right text-green">
-                      {unallocated !== null && totalScore > 0
-                        ? fmt((r.score / totalScore) * unallocated, 2)
+                      {budget !== null && totalScore > 0
+                        ? fmt((r.score / totalScore) * budget, 2)
                         : "–"}
                     </td>
                   )}
@@ -170,7 +170,9 @@ async function Board({ searchParams }: Props) {
       {range === "week" && rows && rows.length > 0 && (
         <p className="mt-3 text-sm text-muted">
           Est. $CHOG is each Chog&apos;s share of this week&apos;s score times
-          the unallocated pool. Final amounts post on Monad when the week ends.
+          this weekthe budget pool. Final amounts post on Monad when the week
+          ends.apos;s budget, half of the unallocated pool. Final amounts post
+          on Monad when the week ends.
         </p>
       )}
     </>

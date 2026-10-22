@@ -150,3 +150,10 @@ export async function isClaimed(epoch: number, tokenId: number) {
     args: [BigInt(epoch), BigInt(tokenId)],
   });
 }
+
+// Each week pays out half of what the pool has not yet promised, so the pool never runs dry.
+export const WEEK_BUDGET_SHARE = 0.5;
+
+export async function weekBudget() {
+  return (await poolUnallocated()) * WEEK_BUDGET_SHARE;
+}

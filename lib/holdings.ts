@@ -1,7 +1,7 @@
 import { getAddress, isAddress } from "viem";
 import { CHOG_NFT, CHOG_SUPPLY, erc721Abi, publicClient } from "./chain";
 import { readEpoch } from "./epochs";
-import { POOL_ADDRESS, poolUnallocated } from "./pool";
+import { POOL_ADDRESS, weekBudget } from "./pool";
 import { keys } from "./scoring";
 import { currentEpoch } from "./stats";
 import { getStore } from "./store";
@@ -57,9 +57,9 @@ export async function holdingsOf(wallet: string): Promise<Holding[]> {
 
   const store = getStore();
   const epoch = currentEpoch();
-  const [board, unallocated, weekRaw, allRaw] = await Promise.all([
+  const [board, budget, weekRaw, allRaw] = await Promise.all([
     store.ztop(keys.leaderboard(epoch), 2000),
-    poolUnallocated().catch(() => 0),
+    weekBudget().catch(() => 0),
     Promise.all(ids.map((id) => store.get(keys.raw(epoch, id)))),
     Promise.all(ids.map((id) => store.get(keys.raw("all", id)))),
   ]);
@@ -102,7 +102,7 @@ export async function holdingsOf(wallet: string): Promise<Holding[]> {
         weekSends: Number(weekRaw[i] ?? 0),
         allSends: Number(allRaw[i] ?? 0),
         rank: idx >= 0 ? idx + 1 : null,
-        estimate: total > 0 ? (score / total) * unallocated : 0,
+        estimate: total > 0 ? (score / total) * budget : 0,
         unclaimed: unclaimed.filter((p) => p.tokenId === id),
       };
     })

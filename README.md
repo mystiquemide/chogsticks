@@ -48,6 +48,10 @@ Chogsticks turns use into income. The more people reach for your Chog in chat, t
 3. The animated sticker posts. Its footer says whether the send was credited, and if not, why.
 4. Click **Whose Chog is #…?** under the sticker. The token page shows the new send, its rank, its 7-day chart, and the wallet earning from it.
 
+**If you hold a Chog**
+
+Open [My Chogs](https://chogsticks.midelabs.xyz/my), paste your wallet or tap Use my wallet. You see every Chog you hold, its sends and rank, this week's estimate, and one Claim all button for every posted payout.
+
 Then check the [leaderboard](https://chogsticks.midelabs.xyz/leaderboard) and the [pool](https://chogsticks.midelabs.xyz/pool).
 
 ## How it works
@@ -108,7 +112,7 @@ Every send is counted as raw usage. Only some sends are credited toward payouts.
 | Account age | Discord accounts younger than 30 days are counted but not credited. Age is read from the Discord user id |
 | Replays | The same Discord interaction is only counted once |
 
-A Chog's weekly score is the sum of its credited sends. Its share of the week's budget is its score divided by the total score of all Chogs that week.
+A Chog's weekly score is the sum of its credited sends. Its share of the week's budget is its score divided by the total score of all Chogs that week. Each week's budget is half of the pool's unallocated balance, so the pool shrinks gradually and never empties in one week.
 
 ## Weekly payouts
 
@@ -116,7 +120,7 @@ A Chog's weekly score is the sum of its credited sends. Its share of the week's 
 2. **Allocation is built.** `scripts/epoch.ts` reads the week's scores, splits the budget by score, and builds an OpenZeppelin Merkle tree of `(week, tokenId, amount)`.
 3. **File is published.** The full allocation, with every token, score, amount and proof, is written to [`data/epochs/`](data/epochs) so anyone can recompute the root.
 4. **Root is posted.** The poster wallet calls `postRoot(week, root, total)` on the pool. The contract refuses if `total` is more than the unallocated balance.
-5. **Holder claims.** On the token page, the holder connects a wallet and clicks Claim. The contract checks the proof and that the caller is `ownerOf(tokenId)` right now, then sends the $CHOG.
+5. **Holder claims.** On the token page or My Chogs, the holder connects a wallet and claims. The contract checks the proof and that the caller is `ownerOf(tokenId)` right now, then sends the $CHOG.
 
 ## Why the token has to be there
 
@@ -175,6 +179,7 @@ Monad mainnet, chain id 143.
 | Scoring | [`lib/scoring.ts`](lib/scoring.ts) | Decay, daily cap, account age, replay protection, weekly epochs |
 | Stats | [`lib/stats.ts`](lib/stats.ts) | Leaderboards, per-token stats, the homepage counters |
 | Pool reads | [`lib/pool.ts`](lib/pool.ts) | Balances, posted roots, claim status, `ownerOf` |
+| Holdings | [`lib/holdings.ts`](lib/holdings.ts) | Finds a wallet's Chogs, their estimates and unclaimed payouts for My Chogs |
 | Payout script | [`scripts/epoch.ts`](scripts/epoch.ts) | Builds the week's Merkle tree and allocation file |
 | Contract | [`contracts/src/ChogsticksPool.sol`](contracts/src/ChogsticksPool.sol) | Holds $CHOG, stores roots, pays the current holder |
 
