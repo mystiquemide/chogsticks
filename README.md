@@ -6,6 +6,8 @@
 
 # Chogsticks
 
+[![CI](https://github.com/mystiquemide/chogsticks/actions/workflows/ci.yml/badge.svg)](https://github.com/mystiquemide/chogsticks/actions/workflows/ci.yml)
+
 **Your Chog gets paid when the internet uses it.**
 
 Every Chog Genesis NFT is an animated sticker pack made from its own on-chain art. Anyone can send it in Discord with `/chog`. Each send is credited to that token, and every week the wallet holding the Chog claims its share of a $CHOG pool on Monad.
@@ -140,7 +142,7 @@ A Chog's weekly score is the sum of its credited sends. Its share of the week's 
 | Posting more than the pool holds, or one week draining another | Reverts | [`contracts/test/ChogsticksPool.t.sol`](contracts/test/ChogsticksPool.t.sol) |
 | The operator withdrawing the pool | There is no withdraw function | [`contracts/src/ChogsticksPool.sol`](contracts/src/ChogsticksPool.sol) |
 
-10 scoring tests (`npm test`) and 16 contract tests including a fuzz test (`forge test`) cover these cases.
+10 scoring tests (`npm test`) and 16 contract tests including a fuzz test (`forge test`) cover these cases. CI runs both, plus the type check, lint and build, on every push.
 
 ## On-chain
 
