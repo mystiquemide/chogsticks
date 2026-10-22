@@ -14,6 +14,8 @@ Every Chog Genesis NFT is an animated sticker pack made from its own on-chain ar
 
 [chogsticks.midelabs.xyz](https://chogsticks.midelabs.xyz) · [Try a sticker pack](https://chogsticks.midelabs.xyz/try) · [Add to Discord](https://discord.com/oauth2/authorize?client_id=1561422294574694420) · [Leaderboard](https://chogsticks.midelabs.xyz/leaderboard) · [Pool](https://chogsticks.midelabs.xyz/pool)
 
+[![Watch the Chogsticks demo (2:18)](assets/readme/demo-thumbnail.jpg)](https://youtu.be/mdepgrYxjeI)
+
 ## Contents
 
 - [Why](#why)
