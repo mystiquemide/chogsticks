@@ -19,6 +19,27 @@ const poolAbi = [
     inputs: [],
     outputs: [{ type: "uint256" }],
   },
+  {
+    type: "function",
+    name: "poster",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ type: "address" }],
+  },
+  {
+    type: "function",
+    name: "roots",
+    stateMutability: "view",
+    inputs: [{ type: "uint256" }],
+    outputs: [{ type: "bytes32" }],
+  },
+  {
+    type: "function",
+    name: "epochRemaining",
+    stateMutability: "view",
+    inputs: [{ type: "uint256" }],
+    outputs: [{ type: "uint256" }],
+  },
 ] as const;
 const erc20Abi = [
   {
@@ -73,4 +94,43 @@ export async function ownerOf(id: number) {
 export async function poolUnallocated() {
   const { balance, allocated } = await poolBalances();
   return balance - allocated;
+}
+
+export async function epochRoots(upTo: number) {
+  const epochs = Array.from({ length: upTo + 1 }, (_, i) => i);
+  return Promise.all(
+    epochs.map(async (e) => {
+      const [root, remaining] = await Promise.all([
+        publicClient.readContract({
+          address: POOL_ADDRESS,
+          abi: poolAbi,
+          functionName: "roots",
+          args: [BigInt(e)],
+        }),
+        publicClient.readContract({
+          address: POOL_ADDRESS,
+          abi: poolAbi,
+          functionName: "epochRemaining",
+          args: [BigInt(e)],
+        }),
+      ]);
+      const posted =
+        root !==
+        "0x0000000000000000000000000000000000000000000000000000000000000000";
+      return {
+        epoch: e,
+        posted,
+        root,
+        remaining: Number(formatUnits(remaining, 18)),
+      };
+    }),
+  );
+}
+
+export async function poster() {
+  return publicClient.readContract({
+    address: POOL_ADDRESS,
+    abi: poolAbi,
+    functionName: "poster",
+  });
 }

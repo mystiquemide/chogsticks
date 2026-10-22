@@ -1,0 +1,14 @@
+[
+  {
+    "kind": "deploy",
+    "label": "Pool deployed, source verified on Sourcify",
+    "tx": "0x5fffe1cd8d22f7979b8e33ce23fadb108b86426657b56099d96e36e83215b85d",
+    "date": "2026-10-21"
+  },
+  {
+    "kind": "fund",
+    "label": "Funded 51.58 $CHOG (bought on nad.fun with 3.5 MON)",
+    "tx": "0x38f7634596195918a9cbd70c896a8633962bee53ed57b9abc1936b69e1b1fa56",
+    "date": "2026-10-21"
+  }
+]
