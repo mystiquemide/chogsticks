@@ -124,6 +124,22 @@ A Chog's weekly score is the sum of its credited sends. Its share of the week's 
 4. **Root is posted.** The poster wallet calls `postRoot(week, root, total)` on the pool. The contract refuses if `total` is more than the unallocated balance.
 5. **Holder claims.** On the token page or My Chogs, the holder connects a wallet and claims. The contract checks the proof and that the caller is `ownerOf(tokenId)` right now, then sends the $CHOG.
 
+```mermaid
+sequenceDiagram
+  participant U as Anyone in Discord
+  participant C as Chogsticks
+  participant P as ChogsticksPool on Monad
+  participant H as Chog holder
+  U->>C: /chog sticker id
+  C->>C: score the send, update leaderboard
+  C-->>U: animated sticker
+  Note over C: week closes
+  C->>P: postRoot(week, root, total)
+  H->>P: claim(week, tokenId, amount, proof)
+  P->>P: check proof and ownerOf(tokenId)
+  P-->>H: $CHOG
+```
+
 ## Why the token has to be there
 
 - **The pack is the token.** Stickers are rendered from that token's own image and traits, read from its on-chain `tokenURI`.
