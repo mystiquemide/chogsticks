@@ -172,7 +172,19 @@ Monad mainnet, chain id 143.
 
 ## Architecture
 
-<img src="assets/readme/architecture.png" alt="Chogsticks architecture: Discord and the website call the Next.js app, which uses Upstash Redis, token art and Monad RPC. The weekly epoch script posts roots to ChogsticksPool, and holders claim from the pool." />
+```mermaid
+flowchart TB
+  D["Discord<br/>/chog in any chat"] -->|signed interaction| API
+  W["Website<br/>try, leaderboard, pool, My Chogs"] --> API
+  API["Next.js app on Vercel<br/>signature check, scoring,<br/>sticker renderer, stats, proofs"]
+  API --> R[("Upstash Redis<br/>sends, scores")]
+  API --> T["Token art + traits<br/>from tokenURI"]
+  API --> M["Monad RPC<br/>ownerOf, balances"]
+  E["scripts/epoch.ts<br/>weekly Merkle tree"] -->|reads weekly scores| API
+  E --> F["data/epochs/<br/>published allocations"]
+  E -->|postRoot| P["ChogsticksPool<br/>on Monad"]
+  H["Holder wallet"] -->|claim / claimMany| P
+```
 
 | Part | Where | What it does |
 |---|---|---|
