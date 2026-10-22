@@ -1,6 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Pages move to the custom domain. /api stays reachable on vercel.app for the Discord endpoint.
+  async redirects() {
+    return [
+      {
+        source: "/:path((?!api/).*)",
+        has: [{ type: "host", value: "chogsticks.vercel.app" }],
+        destination: "https://chogsticks.midelabs.xyz/:path",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

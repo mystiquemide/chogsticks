@@ -10,7 +10,7 @@
 
 Every Chog Genesis NFT is an animated sticker pack made from its own on-chain art. Anyone can send it in Discord with `/chog`. Each send is credited to that token, and every week the wallet holding the Chog claims its share of a $CHOG pool on Monad.
 
-[chogsticks.vercel.app](https://chogsticks.vercel.app) · [Try a sticker pack](https://chogsticks.vercel.app/try) · [Add to Discord](https://discord.com/oauth2/authorize?client_id=1561422294574694420)
+[chogsticks.midelabs.xyz](https://chogsticks.midelabs.xyz) · [Try a sticker pack](https://chogsticks.midelabs.xyz/try) · [Add to Discord](https://discord.com/oauth2/authorize?client_id=1561422294574694420)
 
 ## Why
 
@@ -31,14 +31,14 @@ Each of the 1,969 Chogs gets 6 base stickers (GM, WAGMI, NGMI, COPE, LFG, CHOG O
 
 ## Try it in 2 minutes
 
-**In the browser, nothing to install:** open [/try](https://chogsticks.vercel.app/try), pick any id from 1 to 1969, and flip through its pack. Copy the command or download the GIF.
+**In the browser, nothing to install:** open [/try](https://chogsticks.midelabs.xyz/try), pick any id from 1 to 1969, and flip through its pack. Copy the command or download the GIF.
 
 **In Discord:**
 1. [Add Chogsticks to your account](https://discord.com/oauth2/authorize?client_id=1561422294574694420) and choose **Add to My Apps**.
 2. In any chat, type `/chog`, pick a sticker, and give an id (or leave it empty for a random Chog).
 3. Click **Whose Chog is #…?** under the sticker. The token page shows the new send, its rank, and the wallet earning from it.
 
-Then check the [leaderboard](https://chogsticks.vercel.app/leaderboard) and the [pool](https://chogsticks.vercel.app/pool).
+Then check the [leaderboard](https://chogsticks.midelabs.xyz/leaderboard) and the [pool](https://chogsticks.midelabs.xyz/pool).
 
 ## Why the token has to be there
 

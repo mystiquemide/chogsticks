@@ -16,7 +16,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chogsticks.vercel.app"),
+  metadataBase: new URL("https://chogsticks.midelabs.xyz"),
   title: "Chogsticks",
   description: "Your Chog gets paid when the internet uses it.",
   openGraph: {
