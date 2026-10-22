@@ -39,7 +39,7 @@ const ALL_COLUMNS = [
   {
     title: "Project",
     links: [
-      { label: "GitHub", href: "https://github.com/mystiquemide/chog-2" },
+      { label: "GitHub", href: "https://github.com/mystiquemide/chogsticks" },
       { label: "chog.xyz", href: "https://chog.xyz" },
       { label: "Chogathon 2026", href: "https://chogathon.chog.xyz" },
     ],

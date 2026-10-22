@@ -102,7 +102,7 @@ Next.js 16 on Vercel, Upstash Redis for counts, `sharp` for sticker rendering, v
 ## Run locally
 
 ```bash
-git clone https://github.com/mystiquemide/chog-2 && cd chog-2
+git clone https://github.com/mystiquemide/chogsticks && cd chogsticks
 npm install
 cp .env.example .env.local   # Discord app id and public key; Redis is optional, counts fall back to memory
 npm test && (cd contracts && forge test)
