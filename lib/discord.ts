@@ -125,8 +125,9 @@ export function stickerMessage(opts: {
   sticker: string;
   color: string;
   credited: boolean;
+  reason?: string;
 }) {
-  const { site, token, sticker, color, credited } = opts;
+  const { site, token, sticker, color, credited, reason } = opts;
   return {
     type: ResponseType.MESSAGE,
     data: {
@@ -137,7 +138,9 @@ export function stickerMessage(opts: {
           footer: {
             text: credited
               ? `Chog #${token.id} credited · chogsticks`
-              : `Chog #${token.id} · chogsticks`,
+              : reason
+                ? `Chog #${token.id} not credited: ${reason} · chogsticks`
+                : `Chog #${token.id} · chogsticks`,
           },
         },
       ],

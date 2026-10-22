@@ -88,11 +88,14 @@ export function ClaimButton({
       });
       setState({ s: "done", tx });
     } catch (e) {
-      const msg =
-        e instanceof Error ? e.message.split("\n")[0] : "Claim failed";
+      const raw = e instanceof Error ? e.message : "";
       setState({
         s: "error",
-        msg: msg.includes("rejected") ? "You cancelled the transaction." : msg,
+        msg: /rejected|denied/i.test(raw)
+          ? "You cancelled the transaction. Nothing was sent."
+          : /insufficient funds/i.test(raw)
+            ? "Not enough MON for gas. Add a little MON and try again."
+            : "The claim didn't go through. Try again in a minute.",
       });
     }
   }

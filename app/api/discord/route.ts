@@ -22,6 +22,12 @@ function siteUrl(req: Request) {
   return `${proto}://${host}`;
 }
 
+const UNCREDITED = {
+  "new-account": "account under 30 days old",
+  "self-send": "holders can't credit their own Chog",
+  "daily-cap": "you hit 5 sends of this Chog today",
+} as const;
+
 export async function POST(req: Request) {
   const publicKey = process.env.CHOGSTICKS_Public_Key;
   const body = await req.text();
@@ -60,7 +66,9 @@ export async function POST(req: Request) {
   if (i.type === InteractionType.COMMAND && i.data?.name === "chog") {
     const sender = senderOf(i);
     if (!sender)
-      return Response.json(ephemeral("Could not tell who sent this."));
+      return Response.json(
+        ephemeral("Discord didn't say who sent this. Try /chog again."),
+      );
 
     const idOpt = option(i, "id");
     const tokenId = idOpt
@@ -79,7 +87,9 @@ export async function POST(req: Request) {
         .map((s) => s.name)
         .join(", ");
       return Response.json(
-        ephemeral(`Chog #${token.id} doesn't have "${name}". Try: ${list}`),
+        ephemeral(
+          `Chog #${token.id} has no \"${name}\" sticker. Its pack: ${list}`,
+        ),
       );
     }
 
@@ -96,9 +106,17 @@ export async function POST(req: Request) {
         sticker: def.name,
         color: def.color,
         credited: result.status === "counted",
+        reason:
+          result.status === "uncredited"
+            ? UNCREDITED[result.reason]
+            : result.status === "duplicate"
+              ? "already counted"
+              : undefined,
       }),
     );
   }
 
-  return Response.json(ephemeral("Unknown command."));
+  return Response.json(
+    ephemeral("Chogsticks only knows /chog. Try /chog sticker:gm."),
+  );
 }

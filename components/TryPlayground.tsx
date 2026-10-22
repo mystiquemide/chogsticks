@@ -98,7 +98,7 @@ export function TryPlayground({ installUrl }: { installUrl: string }) {
             <h2 className="flex items-baseline gap-2">
               <span className="font-display text-5xl uppercase leading-none">
                 Chog
-              </span>
+              </span>{" "}
               <span className="font-mono text-4xl font-bold">#{pack.id}</span>
             </h2>
             <div className="ink-border rounded-2xl bg-white p-4 shadow-hard">

@@ -151,10 +151,10 @@ async function Stats({ id }: { id: number }) {
       {stats && stats.allSends === 0 && (
         <div className="ink-border rounded-2xl bg-white p-4 shadow-hard">
           <p className="font-display text-xl uppercase">
-            Nobody&apos;s spammed Chog #{id} yet.
+            No one has sent Chog #{id} yet.
           </p>
           <p className="mb-3 text-muted">
-            Send it somewhere and start its count.
+            Send it in any Discord chat with /chog and its count starts.
           </p>
           <a
             href={INSTALL_URL}
@@ -171,7 +171,17 @@ async function Stats({ id }: { id: number }) {
 export default function ChogPage({ params }: Props) {
   return (
     <Suspense
-      fallback={<main id="main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-10" />}
+      fallback={
+        <main
+          id="main"
+          aria-busy="true"
+          aria-label="Loading Chog"
+          className="mx-auto grid w-full max-w-5xl flex-1 gap-6 px-4 py-10 md:grid-cols-2"
+        >
+          <div className="aspect-square animate-pulse rounded-[20px] bg-ink/10" />
+          <div className="h-64 animate-pulse rounded-2xl bg-ink/10" />
+        </main>
+      }
     >
       <ChogBody params={params} />
     </Suspense>
@@ -209,7 +219,7 @@ async function ChogBody({ params }: Props) {
           <h1 className="flex items-baseline gap-3">
             <span className="font-display text-6xl uppercase leading-none">
               Chog
-            </span>
+            </span>{" "}
             <span className="font-mono text-5xl font-bold">#{token.id}</span>
           </h1>
           <Suspense

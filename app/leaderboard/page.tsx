@@ -18,8 +18,14 @@ const fmt = (n: number, d = 0) =>
   n.toLocaleString("en-US", { maximumFractionDigits: d });
 const day = (ms: number) => {
   const d = new Date(ms);
-  const date = d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
-  return d.getUTCHours() ? `${date} ${String(d.getUTCHours()).padStart(2, "0")}:00` : date;
+  const date = d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+  return d.getUTCHours()
+    ? `${date} ${String(d.getUTCHours()).padStart(2, "0")}:00`
+    : date;
 };
 
 function Tabs({ range }: { range: "week" | "all" }) {
@@ -72,7 +78,8 @@ async function Board({ searchParams }: Props) {
       {rows && rows.length === 0 && (
         <div className="ink-border flex flex-col items-start gap-4 rounded-[20px] bg-white p-6 shadow-hard-lg">
           <p className="font-display text-2xl uppercase">
-            No sends {range === "week" ? "this week" : ""} yet. Be first.
+            {range === "week" ? "No sends this week yet." : "No sends yet."} Be
+            the first.
           </p>
           <div className="flex gap-3">
             <Link
