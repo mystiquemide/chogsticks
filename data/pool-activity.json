@@ -10,5 +10,11 @@
     "label": "Funded 51.58 $CHOG (bought on nad.fun with 3.5 MON)",
     "tx": "0x38f7634596195918a9cbd70c896a8633962bee53ed57b9abc1936b69e1b1fa56",
     "date": "2026-10-21"
+  },
+  {
+    "kind": "root",
+    "label": "Week 1 payout posted: 25.79 $CHOG to 3 Chogs",
+    "tx": "0x8983eda84397f182f3d75bf10d74c9dde476f978ec98c509b78676e634fd514c",
+    "date": "2026-10-23"
   }
 ]

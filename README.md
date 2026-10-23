@@ -177,6 +177,7 @@ Monad mainnet, chain id 143.
 | Pool deployed | [`0x5fffe1cd…b85d`](https://monadscan.com/tx/0x5fffe1cd8d22f7979b8e33ce23fadb108b86426657b56099d96e36e83215b85d) |
 | Bought $CHOG on nad.fun | [`0x9a16a8c5…3438`](https://monadscan.com/tx/0x9a16a8c54576be462c06b6e36a5934b1dea4b93cd7abe2b0b3f83b13c9c63438) |
 | Funded the pool with 51.58 $CHOG | [`0x38f76345…fa56`](https://monadscan.com/tx/0x38f7634596195918a9cbd70c896a8633962bee53ed57b9abc1936b69e1b1fa56) |
+| Week 1 payout posted, 25.79 $CHOG to 3 Chogs ([allocation](data/epochs/0.json)) | [`0x8983eda8…514c`](https://monadscan.com/tx/0x8983eda84397f182f3d75bf10d74c9dde476f978ec98c509b78676e634fd514c) |
 
 **Pool contract functions**
 

@@ -1,0 +1,40 @@
+{
+  "epoch": 0,
+  "closedAt": 1792742400000,
+  "root": "0xd4c7020ea6e6a816bec69991916d337ad354d0346a4c908b96dc754febd7e3c6",
+  "total": "25790080890578586942",
+  "rows": [
+    {
+      "tokenId": 869,
+      "score": 1,
+      "sends": 1,
+      "people": 1,
+      "amount": "8596693630192862314",
+      "proof": [
+        "0x4513bf42e8a0f5201f92ee656236c91de27f4ca7f8e95f2553fb022a766f395e",
+        "0xa6b64f44e75154ac72aa7f086387f59fa7be88584606248b97e32945001c3560"
+      ]
+    },
+    {
+      "tokenId": 1349,
+      "score": 1,
+      "sends": 1,
+      "people": 1,
+      "amount": "8596693630192862314",
+      "proof": [
+        "0x2fdd0a75f352ff4bd5b8112a2d8185821c6a07f6ba127d253640442c4cd95868"
+      ]
+    },
+    {
+      "tokenId": 1096,
+      "score": 1,
+      "sends": 1,
+      "people": 1,
+      "amount": "8596693630192862314",
+      "proof": [
+        "0x0a5c42211ceef4f6178a59fabcf6b73fd1e4faef7ced12f7f0e0810325e7c97a",
+        "0xa6b64f44e75154ac72aa7f086387f59fa7be88584606248b97e32945001c3560"
+      ]
+    }
+  ]
+}
